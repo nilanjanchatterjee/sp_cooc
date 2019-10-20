@@ -1,0 +1,12 @@
+name: "cars"
+output_dir: "docs"
+navbar:
+  title: "Species Cooccurrence"
+  left:
+  - text: "Home"
+   href: index.html
+  - text: "Species cooccurrence"
+   href: git_try.html
+output:
+  html_document:
+ theme: cosmo
