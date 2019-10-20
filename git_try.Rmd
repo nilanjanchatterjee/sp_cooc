@@ -1,0 +1,103 @@
+---
+title: "git_try"
+author: "Nilanjan"
+date: "20 October 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Species Cooccurrence
+
+There are several exisitng ways to calculate the cooccuurence of species from sampling sites. Veech et al. 2014 came up with a R package "cooccur" to calculate the species cooccurrence and test the cooccurrence with several random distribution of species in those sites.
+
+These cooccurrence package provides a vector but that is not enough to plot species cooccurrence network as those are lower triangular and lacks the diagonal element and non-significant species interactions.
+```{r}
+library(cooccur)
+library(igraph)
+```
+
+## Load your data
+
+You need sites x species matrix to calculate the cooccurrence matrix
+
+```{r}
+getwd()
+setwd("D:/Work/River bird")
+try3 <-read.csv("ecos_2014_spr_aut.csv",header = T)
+head(try3)
+```
+
+## Calculate species cooccurrence based on Veech et al. 2014
+The dataset I loaded has both summer and autumn data, I am subsetting the data into two parts for easier understanding
+```{r, results='hide'}
+try31 <-try3[1:40, 2:17]
+try32 <-try3[41:80, 2:17]
+cooc_sum <-cooccur(t(try31), spp_names = T)
+cooc_aut <-cooccur(t(try32), spp_names = T)
+```
+
+## Plotting the cooccurrence 
+```{r}
+par(mfrow=c(2,1))
+plot(cooc_sum)
+plot(cooc_aut)
+```
+
+## Calculate species cooccurrence based on my methodology
+The cluster sequences of the birds used to make two clusters in the plot, are obtained from Grade of Membership Model (Wild et al. 2019)
+Cooccurrence for summer season
+```{r}
+cormat<-matrix(data = NA, nrow=16, ncol=16)
+for(i in 1:16)
+{
+  for(j in 1:16)
+  {
+    cormat[i,j]<-sum(as.numeric(try31[,i]>0)*as.numeric(try31[,j]>0))/(sum(as.numeric(try31[,i]>0))+sum(as.numeric(try31[,j]>0)))
+  }
+}
+network <- graph_from_adjacency_matrix(cormat, weighted=T, mode="undirected", diag=F)
+
+colrs <- c("gray50", "tomato")
+clstr <-c("1","1","1","2","1","1","2","2","2","1","1","1","1","2","2","1")
+my_color <- colrs[as.numeric(as.factor(clstr))]
+
+```
+
+Cooccurrence for autumn season
+```{r}
+cormat1<-matrix(data = NA, nrow=16, ncol=16)
+for(i in 1:16)
+{
+  for(j in 1:16)
+  {
+    cormat1[i,j]<-sum(as.numeric(try32[,i]>0)*as.numeric(try32[,j]>0))/(sum(as.numeric(try32[,i]>0))+sum(as.numeric(try32[,j]>0)))
+  }
+}
+network1 <- graph_from_adjacency_matrix(cormat1, weighted=T, mode="undirected", diag=F)
+
+```
+
+## Plotting the cooccurrence network for summer
+```{r}
+plot(network,edge.arrow.size=.4,vertex.label=colnames(try31), vertex.color=my_color,
+     vertex.label.color="black",vertex.label.font=2)
+title(main="River bird co-occurrence network in summer", cex=2)
+text(1.4,-0.6,"Cluster details",col="black", cex=2.5)
+legend(0.2,-0.8,  legend=c("Lowland species","Highland species"), 
+       col=colrs,  bty = "n", pch=20 , pt.cex = 5, cex = 1.8,
+       text.col="black")
+```
+
+## Plotting the cooccurrence network for autumn
+```{r}
+plot(network1,edge.arrow.size=.4,vertex.label=colnames(try31), vertex.color=my_color,
+     vertex.label.color="black",vertex.label.font=2)
+title(main="River bird co-occurrence network in autumn", cex=2.5)
+text(1.68,-0.66,"Cluster details",col="black", cex=2)
+legend(0.9,-0.72,  legend=c("Lowland species","Highland species"), 
+       col=colrs,  bty = "n", pch=20 , pt.cex = 5, cex = 1.8,
+       text.col="black")
+```
