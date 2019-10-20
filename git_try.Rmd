@@ -1,6 +1,6 @@
 ---
-title: "git_try"
-author: "Nilanjan"
+title: "Species Cooccurrence Analysis in R"
+author: "Nilanjan Chatterjee"
 date: "20 October 2019"
 output: html_document
 knit: (function(input_file, encoding) {
