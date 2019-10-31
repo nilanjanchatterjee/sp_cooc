@@ -1,13 +1,8 @@
 ---
-title: "Species Cooccurrence Analysis in R"
+title: "Species Co-occurrence Analysis in R"
 author: "Nilanjan Chatterjee"
 date: "20 October 2019"
 output: html_document
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
 
 ```{r setup, include=FALSE}
@@ -103,6 +98,12 @@ plot(network1,edge.arrow.size=.4,vertex.label=colnames(try31), vertex.color=my_c
 title(main="River bird co-occurrence network in autumn", cex=2.5)
 text(1.68,-0.66,"Cluster details",col="black", cex=2)
 legend(0.9,-0.72,  legend=c("Lowland species","Highland species"), 
-       col=colrs,  bty = "n", pch=20 , pt.cex = 5, cex = 1.8,
+       col=colrs,  bty = "n", pch=20 , pt.cex = 5, cex = 1.2,
        text.col="black")
 ```
+## References
+Griffith, D. M., Veech, J. A., & Marsh, C. J. (2016). Cooccur: probabilistic species co-occurrence analysis in R. Journal of Statistical Software, 69(2), 1-17.
+
+Veech, J. A. (2014). The pairwise approach to analysing species co‐occurrence. Journal of Biogeography, 41(6), 1029-1035.
+
+Veech, J. A. (2013). A probabilistic model for analysing species co‐occurrence. Global Ecology and Biogeography, 22(2), 252-260.
