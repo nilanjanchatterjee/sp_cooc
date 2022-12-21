@@ -1,7 +1,7 @@
 ---
 title: "Species Co-occurrence Analysis in R"
 author: "Nilanjan Chatterjee"
-date: "20 October 2019"
+date: "21 December 2022"
 output: html_document
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Species Cooccurrence
 
-There are several exisitng ways to calculate the cooccuurence of species from sampling sites. Veech et al. 2014 came up with a R package "cooccur" to calculate the species cooccurrence and test the cooccurrence with several random distribution of species in those sites.
+There are several exisiting ways to calculate the cooccuurence of species from sampling sites. Veech et al. (2014) came up with a R package **cooccur** to calculate the species cooccurrence and test the cooccurrence with several random distribution of species in those sites.
 
 These cooccurrence package provides a vector but that is not enough to plot species cooccurrence network as those are lower triangular and lacks the diagonal element and non-significant species interactions.
 ```{r}
@@ -26,7 +26,7 @@ library(igraph)
 
 ## Load your data
 
-You need sites x species matrix to calculate the cooccurrence matrix
+You need sites x species matrix to calculate the cooccurrence matrix.
 
 ```{r}
 getwd()
@@ -35,7 +35,7 @@ try3 <-read.csv("ecos_2014_spr_aut.csv",header = T)
 head(try3)
 ```
 
-## Calculate species cooccurrence based on Veech et al. 2014
+## Calculate species cooccurrence based on Veech et al. (2014)
 The dataset I loaded has both summer and autumn data, I am subsetting the data into two parts for easier understanding
 ```{r, results='hide'}
 try31 <-try3[1:40, 2:17]
@@ -52,7 +52,7 @@ plot(cooc_aut)
 ```
 
 ## Calculate species cooccurrence based on my methodology
-The cluster sequences of the birds used to make two clusters in the plot, are obtained from Grade of Membership Model (Wild et al. 2019)
+The cluster sequences of the birds used to make two clusters in the plot, are obtained from Grade of Membership Model (White et al. 2019)
 Cooccurrence for summer season
 ```{r}
 cormat<-matrix(data = NA, nrow=16, ncol=16)
@@ -106,9 +106,12 @@ legend(0.9,-0.72,  legend=c("Lowland species","Highland species"),
        col=colrs,  bty = "n", pch=20 , pt.cex = 5, cex = 1.2,
        text.col="black")
 ```
+
 ## References
 Griffith, D. M., Veech, J. A., & Marsh, C. J. (2016). Cooccur: probabilistic species co-occurrence analysis in R. Journal of Statistical Software, 69(2), 1-17.
 
 Veech, J. A. (2014). The pairwise approach to analysing species co‐occurrence. Journal of Biogeography, 41(6), 1029-1035.
 
 Veech, J. A. (2013). A probabilistic model for analysing species co‐occurrence. Global Ecology and Biogeography, 22(2), 252-260.
+
+White, A. E., Dey, K. K., Mohan, D., Stephens, M., & Price, T. D. (2019). Regional influences on community structure across the tropical-temperate divide. Nature Communications, 10(1), 1-8.
